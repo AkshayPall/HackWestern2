@@ -8,11 +8,13 @@ import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.http.GET;
+import retrofit.http.Query;
 
 /**
  * Created by Kenny on 2015-11-28.
  */
 public class TwitterApi extends TwitterApiClient {
+
     public TwitterApi (TwitterSession session){
         super(session);
     }
@@ -28,5 +30,5 @@ public class TwitterApi extends TwitterApiClient {
 
 interface CustomService {
     @GET("/1.1/trends/available.json")
-    void available(retrofit.Callback<List<Tweet>> cb);
+    void available(@Query("name")retrofit.Callback<List<Tweet>> cb);
 }

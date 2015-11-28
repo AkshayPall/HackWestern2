@@ -18,7 +18,15 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.StatusesService;
+
 import io.fabric.sdk.android.Fabric;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -44,19 +52,20 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
 
-//        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
-//        StatusesService statusesService = twitterApiClient.getStatusesService();
-//        statusesService.show(524971209851543553L, null, null, null, new Callback<Tweet>() {
-//            @Override
-//            public void success(Result<Tweet> result) {
-//
-//            }
-//
-//            @Override
-//            public void failure(TwitterException e) {
-//
-//            }
-//        });
+        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+        StatusesService statusesService = twitterApiClient.getStatusesService();
+        statusesService.show(524971209851543553L, null, null, null, new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                
+            }
+
+            @Override
+            public void failure(TwitterException e) {
+
+            }
+        });
+
 
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "rEopROdu5tjjipAGOzcM40l9FO89tO0CyTTrJa6v", "xG5LPIGLxpeacda1audJUZwI1dP2naXjt6JsKfHl");
