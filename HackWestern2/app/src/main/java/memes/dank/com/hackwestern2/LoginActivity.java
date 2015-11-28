@@ -27,12 +27,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Authentication for Twitter
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
 
         final TwitterLoginButton loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
         loginButton.setEnabled(true);
         loginButton.setCallback(new Callback<TwitterSession>() {
+            //creates the session for the user
             @Override
             public void success(Result<TwitterSession> result) {
                 loginButton.setEnabled(false);

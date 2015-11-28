@@ -19,6 +19,7 @@ public class TwitterApi extends TwitterApiClient {
         super(session);
     }
 
+    //creating the adapter for the endpoint
     RestAdapter mRestAdapter = new RestAdapter.Builder()
             .setEndpoint("https://api.twitter.com")
             .build();
@@ -28,6 +29,7 @@ public class TwitterApi extends TwitterApiClient {
     }
 }
 
+//for getting the available trending tweets
 interface CustomService {
     @GET("/1.1/trends/available.json")
     void available(@Query("name")retrofit.Callback<List<Tweet>> cb);

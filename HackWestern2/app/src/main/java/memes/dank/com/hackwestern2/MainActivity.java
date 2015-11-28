@@ -52,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
 
+        //TODO:finish the success and failure
         TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
         StatusesService statusesService = twitterApiClient.getStatusesService();
         statusesService.show(524971209851543553L, null, null, null, new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
-                
+
             }
 
             @Override
