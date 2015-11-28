@@ -73,6 +73,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.1.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.digits.sdk.android/digits/1.9.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.parse/parsefacebookutils-v4-android/1.10.3/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.twitter.sdk.android/tweet-composer/1.0.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.twitter.sdk.android/tweet-ui/1.7.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.twitter.sdk.android/twitter-core/1.6.1/jars" />
@@ -108,6 +109,7 @@
     <orderEntry type="library" exported="" name="twitter-text-1.13.0" level="project" />
     <orderEntry type="library" exported="" name="tweet-composer-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="twitter-core-1.6.1" level="project" />
+    <orderEntry type="library" exported="" name="parsefacebookutils-v4-android-1.10.3" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.1.1" level="project" />
     <orderEntry type="library" exported="" name="twitter-1.10.0" level="project" />
   </component>

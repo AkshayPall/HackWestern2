@@ -34,6 +34,9 @@ android {
         }
     }
 }
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
@@ -43,6 +46,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'com.parse:parsefacebookutils-v4-android:1.10.3@aar'
     compile('com.twitter.sdk.android:twitter:1.10.0@aar') {
         transitive = true;
     }
