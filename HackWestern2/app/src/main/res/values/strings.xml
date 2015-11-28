@@ -2,5 +2,6 @@
     <string name="app_name">Stay Soshul.</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Choose us for top 10!</string>
+    <string name="action_settings">Choose us for top 6!</string>
+    <string name="action_event">Event</string>
 </resources>

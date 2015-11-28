@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent" android:background="@null"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <TextView
+            style="@style/Base.TextAppearance.AppCompat.Body2"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#hashtag"
+            android:id="@+id/hashtag"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_chat_bubble_black_36dp"
+            android:id="@+id/tweet_points"/>
+        <View
+            android:layout_below="@id/hashtag"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#343434"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -15,8 +15,12 @@ import java.util.List;
 public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        private final TextView mHashtag;
+//        private final TextView mTweet;
+
         public ViewHolder(View itemView){
             super(itemView);
+            mHashtag = (TextView)itemView.findViewById(R.id.hashtag);
         }
     }
 
@@ -24,14 +28,16 @@ public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.song_feed_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.tweet_feed_item, viewGroup, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         final String hashtag = mHashtags.get(i);
-        //TODO: show hashtags!
+        //show hashtags
+
+        viewHolder.mHashtag.setText("#"+hashtag);
     }
 
     @Override
