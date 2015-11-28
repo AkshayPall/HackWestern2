@@ -14,11 +14,32 @@ public class Song {
     public static final String SONG_ARTIST = "Artist";
     public static final String SONG_URI = "Uri";
 
+    private final int mPlays;
+    private final String mName;
+    private final String mArtist;
+    private final String mUri;
+
 
     public Song (ParseObject song) {
-        int plays = (int)song.get(Song.SONG_PLAYS);
-        String name = song.getString(Song.SONG_NAME);
-        String artist = song.getString(Song.SONG_ARTIST);
-        String Uri = song.getString(Song.SONG_URI);
+        mPlays = (int)song.get(Song.SONG_PLAYS);
+        mName = song.getString(Song.SONG_NAME);
+        mArtist = song.getString(Song.SONG_ARTIST);
+        mUri = song.getString(Song.SONG_URI);
+    }
+
+    public int getPlays() {
+        return mPlays;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public String getArtist() {
+        return mArtist;
+    }
+
+    public String getUri() {
+        return mUri;
     }
 }

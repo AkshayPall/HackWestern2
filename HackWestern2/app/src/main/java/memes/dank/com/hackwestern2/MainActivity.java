@@ -3,6 +3,8 @@ package memes.dank.com.hackwestern2;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.wtf("User Name", ""+ParseUser.getCurrentUser().getUsername());
                 Log.wtf("User Points", ""+ParseUser.getCurrentUser().get(USER_POINTS));
 
+                final List<Song> songs = new ArrayList<Song>();
+
                 ParseQuery<ParseObject> songQuery = ParseQuery.getQuery(Song.CLASS_SONG);
                 songQuery.setLimit(3);
                 songQuery.addDescendingOrder(Song.SONG_PLAYS);
@@ -52,8 +56,13 @@ public class MainActivity extends AppCompatActivity {
                         if (e == null){
                             for (int i = 0; i < objects.size() ; i++){
                                 ParseObject song = objects.get(i);
+                                songs.add(new Song(song));
                                 Log.wtf("Song Info", "Plays: "+song.get(Song.SONG_PLAYS)+", "+song.getString(Song.SONG_NAME)+" by "+song.getString(Song.SONG_ARTIST));
                             }
+
+                            RecyclerView songsList = (RecyclerView)findViewById(R.id.song_recyclerview);
+                            songsList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                            songsList.setAdapter(new SongAdapter(songs));
                         }
                     }
                 });
