@@ -17,6 +17,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import io.fabric.sdk.android.Fabric;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -26,13 +29,34 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "H5yaDTRzUmuYHZ2PPngfqDIiV";
+    private static final String TWITTER_SECRET = "u3M8OXkbC5Va2yLmCJ8v3hSAaaIajvfdPhnFRsLrwUxxc0PCbZ";
+
+
     private static final String USER_POINTS = "Points";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
+
+//        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+//        StatusesService statusesService = twitterApiClient.getStatusesService();
+//        statusesService.show(524971209851543553L, null, null, null, new Callback<Tweet>() {
+//            @Override
+//            public void success(Result<Tweet> result) {
+//
+//            }
+//
+//            @Override
+//            public void failure(TwitterException e) {
+//
+//            }
+//        });
 
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "rEopROdu5tjjipAGOzcM40l9FO89tO0CyTTrJa6v", "xG5LPIGLxpeacda1audJUZwI1dP2naXjt6JsKfHl");
