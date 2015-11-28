@@ -4,4 +4,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Choose us for top 6!</string>
     <string name="action_event">Event</string>
+    <string name="facebook_app_id">136478540050191</string>
 </resources>
