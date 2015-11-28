@@ -12,21 +12,15 @@ import java.util.List;
 /**
  * Created by rohitsharma on 2015-11-28.
  */
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
+public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private final TextView mName;
-        private final TextView mArtist;
-        private final TextView mPlays;
 
         public ViewHolder(View itemView){
             super(itemView);
-            mName = (TextView)itemView.findViewById(R.id.song_name);
-            mArtist = (TextView)itemView.findViewById(R.id.song_artist);
-            mPlays = (TextView)itemView.findViewById(R.id.song_plays);
         }
     }
 
-    private List<Song> mSongs;
+    private List<String> mHashtags;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
@@ -36,18 +30,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        final Song song = mSongs.get(i);
-        viewHolder.mName.setText(song.getName());
-        viewHolder.mArtist.setText(song.getArtist());
-        viewHolder.mPlays.setText(song.getPlays()+" plays");
+        final String hashtag = mHashtags.get(i);
+        //TODO: show hashtags!
     }
 
     @Override
     public int getItemCount() {
-        return mSongs.size();
+        return mHashtags.size();
     }
 
-    public SongAdapter(List<Song> songs){
-        mSongs = songs;
+    public TwitterAdapter(List<String> hashtags){
+        mHashtags = hashtags;
     }
 }
