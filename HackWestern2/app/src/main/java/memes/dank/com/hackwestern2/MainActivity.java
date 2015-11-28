@@ -19,9 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String api = "http://api.wolframalpha.com/v2/query?input=pi&appid="+WolframAsyncTask.APP_ID;
-        new WolframAsyncTask().execute(api);
     }
 
     @Override
