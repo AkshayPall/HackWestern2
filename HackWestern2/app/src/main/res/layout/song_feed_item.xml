@@ -23,13 +23,13 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/song_name"
                 android:id="@+id/song_artist"/>
-            <TextView
+            <ImageView
 
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="plays"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_play_arrow_black_48dp"
                 android:id="@+id/song_plays"/>
             <View
                 android:layout_below="@id/song_name"

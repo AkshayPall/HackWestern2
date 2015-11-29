@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static android.support.v4.app.ActivityCompat.startActivity;
@@ -25,16 +27,18 @@ public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHold
 
         private final TextView mHashtag;
         private final ImageView mImage;
-//        private final TextView mTweet;
+        private final RelativeLayout mTweetLayout;
 
         public ViewHolder(View itemView){
             super(itemView);
             mHashtag = (TextView)itemView.findViewById(R.id.hashtag);
             mImage = (ImageView)itemView.findViewById(R.id.tweet_points);
+            mTweetLayout = (RelativeLayout)itemView.findViewById(R.id.tweet_layout);
         }
     }
 
     private List<String> mHashtags;
+    private HashtagListener mListener;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
@@ -43,7 +47,7 @@ public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         final String hashtag = mHashtags.get(i);
         //show hashtags
 
@@ -54,6 +58,18 @@ public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHold
                 Log.wtf("SW", "clicked is " + hashtag);
             }
         });
+
+        viewHolder.mTweetLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent k = new Intent(android.content.Intent.ACTION_SEND);
+//                k.setType("text/plain");
+//                k.putExtra(Intent.EXTRA_SUBJECT, "Soshul Discussion");
+//                k.putExtra(Intent.EXTRA_TEXT, viewHolder.mHashtag.getText().toString());
+//                startActivity(Intent.createChooser(k, "Soshul Discussion"));
+                mListener.moveToTwitter("#"+hashtag);
+            }
+        });
     }
 
     @Override
@@ -61,7 +77,12 @@ public class TwitterAdapter extends RecyclerView.Adapter<TwitterAdapter.ViewHold
         return mHashtags.size();
     }
 
-    public TwitterAdapter(List<String> hashtags){
+    public TwitterAdapter(List<String> hashtags, HashtagListener listener){
         mHashtags = hashtags;
+        mListener = listener;
+    }
+
+    public interface HashtagListener extends Serializable {
+        void moveToTwitter (String hashtag);
     }
 }

@@ -3,6 +3,8 @@ package memes.dank.com.hackwestern2;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -36,7 +38,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import static android.support.v4.app.ActivityCompat.startActivity;
+public class MainActivity extends AppCompatActivity implements TwitterAdapter.HashtagListener, SongAdapter.SongListener {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "H5yaDTRzUmuYHZ2PPngfqDIiV";
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog mLoadingDialog;
     private TextView mUsername;
     private int mPoints;
+    private TextView mTopUserName;
+    private TextView mTopUserPoints;
 
 
     @Override
@@ -101,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
         mLoadingDialog.setTitle("Loading");
         mLoadingDialog.show();
 
+        mTopUserName = (TextView)findViewById(R.id.top_user_name);
+        mTopUserPoints = (TextView)findViewById(R.id.top_user_points);
+
         mUsername = (TextView)findViewById(R.id.user_name);
 
         ParseUser.logInInBackground("John Cena", "password", new LogInCallback() {
@@ -132,6 +140,19 @@ public class MainActivity extends AppCompatActivity {
         hashtags.add("BrouisIsFake");
         hashtags.add("ClimateMarch");
 
+        ParseQuery<ParseUser> topUserQuery = ParseQuery.getQuery("User");
+        topUserQuery.addDescendingOrder("Points");
+        topUserQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null & objects.size() > 0){
+                    ParseUser topUser = objects.get(0);
+                    mTopUserName.setText(topUser.getUsername());
+                    mTopUserName.setText("#1: "+topUser.getInt("Points")+" Points");
+                }
+            }
+        });
+
 
         ParseQuery<ParseObject> songQuery = ParseQuery.getQuery(Song.CLASS_SONG);
         songQuery.setLimit(3);
@@ -148,14 +169,14 @@ public class MainActivity extends AppCompatActivity {
 
                     MSongsList.setVisibility(View.VISIBLE);
                     if (MSongsList.getAdapter() == null) {
-                        MSongsList.setAdapter(new SongAdapter(songs));
+                        MSongsList.setAdapter(new SongAdapter(songs, MainActivity.this));
                     } else {
                         MSongsList.getAdapter().notifyDataSetChanged();
                     }
 
                     MTweetsList.setVisibility(View.VISIBLE);
                     if (MTweetsList.getAdapter() == null) {
-                        MTweetsList.setAdapter(new TwitterAdapter(hashtags));
+                        MTweetsList.setAdapter(new TwitterAdapter(hashtags, MainActivity.this));
                     } else {
                         MTweetsList.getAdapter().notifyDataSetChanged();
                     }
@@ -222,5 +243,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void moveToTwitter(String hashtag) {
+        updatePoints(10);
+
+        Intent k = new Intent(android.content.Intent.ACTION_SEND);
+        k.setType("text/plain");
+        k.putExtra(Intent.EXTRA_SUBJECT, "Soshul Discussion");
+        k.putExtra(Intent.EXTRA_TEXT, hashtag);
+        startActivity(Intent.createChooser(k, "Soshul Discussion"));
+    }
+
+    private void updatePoints(int points) {
+        //add 10 points to user
+        mPoints+=points;
+        mPointsView.setText("Points: "+mPoints);
+        ParseUser.getCurrentUser().put("Points", mPoints);
+        ParseUser.getCurrentUser().saveInBackground();
+    }
+
+    @Override
+    public void playSong(Song song) {
+        updatePoints(5);
+        Intent launcher = new Intent( Intent.ACTION_VIEW, Uri.parse(song.getUri()) );
+        startActivity(launcher);
     }
 }
