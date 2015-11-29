@@ -128,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: query the hashtags
         final List<String> hashtags = new ArrayList<String>(); //fake data
-        hashtags.add("SyrianRefugees");
-        hashtags.add("DonaldTrump");
-        hashtags.add("JustNotReadyTrudeau");
+        hashtags.add("WeLoveYouCalum");
+        hashtags.add("BrouisIsFake");
+        hashtags.add("ClimateMarch");
 
 
         ParseQuery<ParseObject> songQuery = ParseQuery.getQuery(Song.CLASS_SONG);
