@@ -3,6 +3,8 @@ package memes.dank.com.hackwestern2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
@@ -17,27 +19,27 @@ import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TWITTER_KEY = "hFpR99fokgIiS1gF09ofhMdJd";
-    private static final String TWITTER_SECRET = "1utm2ePMQpgTd0lD7UKW2r27mUkGV3U8w2pOOwBb13PxKIxLoR";
+    private static final String TWITTER_KEY = "H5yaDTRzUmuYHZ2PPngfqDIiV";
+    private static final String TWITTER_SECRET = "u3M8OXkbC5Va2yLmCJ8v3hSAaaIajvfdPhnFRsLrwUxxc0PCbZ";
     private static final String TAG = "LoginActivity";
     public TwitterSession mSession;
+    private TwitterLoginButton mLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         //Authentication for Twitter
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
 
-        final TwitterLoginButton loginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
-        loginButton.setEnabled(true);
-        loginButton.setCallback(new Callback<TwitterSession>() {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        mLoginButton = (TwitterLoginButton) findViewById(R.id.twitter_login_button);
+        mLoginButton.setCallback(new Callback<TwitterSession>() {
             //creates the session for the user
             @Override
             public void success(Result<TwitterSession> result) {
-                loginButton.setEnabled(false);
+                mLoginButton.setEnabled(false);
                 mSession = Twitter.getSessionManager().getActiveSession();
                 TwitterAuthToken authToken = mSession.getAuthToken();
                 String token = authToken.token;
@@ -45,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void failure(TwitterException exception) {
-                Log.wtf(TAG, "Something went wrong, try again.");
+            public void failure(TwitterException e) {
+                e.printStackTrace();
             }
         });
     }
