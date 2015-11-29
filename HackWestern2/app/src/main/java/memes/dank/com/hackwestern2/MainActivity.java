@@ -4,10 +4,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.net.Uri;
-=======
->>>>>>> origin/Akshay's
+
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
