@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final String USER_POINTS = "Points";
+    private RecyclerView MTweetsList;
+    private RecyclerView MSongsList;
+    private TextView mPointsView;
+    private ProgressDialog mLoadingDialog;
+    private TextView mUsername;
+    private int mPoints;
 
 
     @Override
@@ -52,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_main);
+
+        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout)findViewById(R.id.refresh_data_layout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(false);
+                mLoadingDialog.show();
+                getData();
+            }
+        });
 
 //        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
 //        StatusesService statusesService = twitterApiClient.getStatusesService();
@@ -70,64 +87,81 @@ public class MainActivity extends AppCompatActivity {
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "rEopROdu5tjjipAGOzcM40l9FO89tO0CyTTrJa6v", "xG5LPIGLxpeacda1audJUZwI1dP2naXjt6JsKfHl");
 
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading");
-        dialog.show();
+        mPointsView = (TextView)findViewById(R.id.user_points);
+
+        MSongsList = (RecyclerView)findViewById(R.id.song_recyclerview);
+        MSongsList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        MSongsList.setVisibility(View.INVISIBLE);
+
+        MTweetsList = (RecyclerView)findViewById(R.id.hashtag_recyclerview);
+        MTweetsList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        MTweetsList.setVisibility(View.INVISIBLE);
+
+        mLoadingDialog = new ProgressDialog(this);
+        mLoadingDialog.setTitle("Loading");
+        mLoadingDialog.show();
+
+        mUsername = (TextView)findViewById(R.id.user_name);
 
         ParseUser.logInInBackground("John Cena", "password", new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                //query points, song plays
+                getData();
+            }
+        });
+    }
 
-                Log.wtf("User Name", ""+ParseUser.getCurrentUser().getUsername());
-                Log.wtf("User Points", ""+ParseUser.getCurrentUser().get(USER_POINTS));
+    private void getData() {
+//query points, song plays
 
-                TextView pointsView = (TextView)findViewById(R.id.user_points);
-                pointsView.setText("Points: "+ParseUser.getCurrentUser().get(USER_POINTS));
+        Log.wtf("User Name", ""+ParseUser.getCurrentUser().getUsername());
+        Log.wtf("User Points", ""+ParseUser.getCurrentUser().get(USER_POINTS));
 
-                TextView username = (TextView)findViewById(R.id.user_name);
-                username.setText(ParseUser.getCurrentUser().getUsername());
+        mPoints = (int)ParseUser.getCurrentUser().get(USER_POINTS);
 
-                final List<Song> songs = new ArrayList<Song>();
+        mPointsView.setText("Points: "+mPoints);
 
-                final RecyclerView songsList = (RecyclerView)findViewById(R.id.song_recyclerview);
-                songsList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                songsList.setVisibility(View.INVISIBLE);
+        mUsername.setText(ParseUser.getCurrentUser().getUsername());
 
-                final RecyclerView tweetsList = (RecyclerView)findViewById(R.id.hashtag_recyclerview);
-                tweetsList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                tweetsList.setVisibility(View.INVISIBLE);
-
-                //TODO: query the hashtags
-                final List<String> hashtags = new ArrayList<String>(); //fake data
-                hashtags.add("SyrianRefugees");
-                hashtags.add("DonaldTrump");
-                hashtags.add("JustNotReadyTrudeau");
+        final List<Song> songs = new ArrayList<Song>();
 
 
-                ParseQuery<ParseObject> songQuery = ParseQuery.getQuery(Song.CLASS_SONG);
-                songQuery.setLimit(3);
-                songQuery.addDescendingOrder(Song.SONG_PLAYS);
-                songQuery.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> objects, ParseException e) {
-                        if (e == null){
-                            for (int i = 0; i < objects.size() ; i++){
-                                ParseObject song = objects.get(i);
-                                songs.add(new Song(song));
-                                Log.wtf("Song Info", "Plays: "+song.get(Song.SONG_PLAYS)+", "+song.getString(Song.SONG_NAME)+" by "+song.getString(Song.SONG_ARTIST));
-                            }
+        //TODO: query the hashtags
+        final List<String> hashtags = new ArrayList<String>(); //fake data
+        hashtags.add("SyrianRefugees");
+        hashtags.add("DonaldTrump");
+        hashtags.add("JustNotReadyTrudeau");
 
-                            songsList.setVisibility(View.VISIBLE);
-                            songsList.setAdapter(new SongAdapter(songs));
 
-                            tweetsList.setVisibility(View.VISIBLE);
-                            tweetsList.setAdapter(new TwitterAdapter(hashtags));
-
-                            dialog.dismiss();
-                        }
+        ParseQuery<ParseObject> songQuery = ParseQuery.getQuery(Song.CLASS_SONG);
+        songQuery.setLimit(3);
+        songQuery.addDescendingOrder(Song.SONG_PLAYS);
+        songQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null){
+                    for (int i = 0; i < objects.size() ; i++){
+                        ParseObject song = objects.get(i);
+                        songs.add(new Song(song));
+                        Log.wtf("Song Info", "Plays: "+song.get(Song.SONG_PLAYS)+", "+song.getString(Song.SONG_NAME)+" by "+song.getString(Song.SONG_ARTIST));
                     }
-                });
+
+                    MSongsList.setVisibility(View.VISIBLE);
+                    if (MSongsList.getAdapter() == null) {
+                        MSongsList.setAdapter(new SongAdapter(songs));
+                    } else {
+                        MSongsList.getAdapter().notifyDataSetChanged();
+                    }
+
+                    MTweetsList.setVisibility(View.VISIBLE);
+                    if (MTweetsList.getAdapter() == null) {
+                        MTweetsList.setAdapter(new TwitterAdapter(hashtags));
+                    } else {
+                        MTweetsList.getAdapter().notifyDataSetChanged();
+                    }
+
+                    mLoadingDialog.dismiss();
+                }
             }
         });
     }
@@ -170,6 +204,13 @@ public class MainActivity extends AppCompatActivity {
                         dialog1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                if (!ParseUser.getCurrentUser().getBoolean("HasSeenEventMessage")){
+                                    mPoints+=5;
+                                    mPointsView.setText("Points: "+mPoints);
+                                    ParseUser.getCurrentUser().put("Points", mPoints);
+                                    ParseUser.getCurrentUser().put("HasSeenEventMessage", true);
+                                    ParseUser.getCurrentUser().saveInBackground();
+                                }
                                 dialog.dismiss();
                             }
                         });
