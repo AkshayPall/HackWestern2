@@ -3,6 +3,7 @@ package memes.dank.com.hackwestern2;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -139,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
         songQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null){
-                    for (int i = 0; i < objects.size() ; i++){
+                if (e == null) {
+                    for (int i = 0; i < objects.size(); i++) {
                         ParseObject song = objects.get(i);
                         songs.add(new Song(song));
-                        Log.wtf("Song Info", "Plays: "+song.get(Song.SONG_PLAYS)+", "+song.getString(Song.SONG_NAME)+" by "+song.getString(Song.SONG_ARTIST));
+                        Log.wtf("Song Info", "Plays: " + song.get(Song.SONG_PLAYS) + ", " + song.getString(Song.SONG_NAME) + " by " + song.getString(Song.SONG_ARTIST));
                     }
 
                     MSongsList.setVisibility(View.VISIBLE);
@@ -184,7 +185,11 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_event){
+        } else if (id == R.id.map){
+            Intent i = new Intent(MainActivity.this, MapsActivity.class);
+            startActivity(i);
+        }
+        else if (id == R.id.action_event){
             final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
             dialog.setTitle("Loading...");
             dialog.show();
